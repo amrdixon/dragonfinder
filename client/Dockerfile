@@ -13,16 +13,18 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 
-COPY setup.py .
+COPY main_application.py .
 
-RUN mkdir classifier_client
+COPY client.py ./
 
-ADD /classifier_client/ ./classifier_client/
+RUN mkdir aws_creds
+
+ADD /aws_creds/ ./aws_creds/
 
 RUN mkdir data_sample
 
 ADD /data_sample/ ./data_sample/
 
-RUN pip install --editable .
+RUN pip install -r requirements.txt
 
 CMD ["/bin/bash"]
