@@ -68,5 +68,7 @@ cloud_deployment/
 models/
 run_servable_model.sh
 client/data_sample/
+client/config/sagemaker_config.json
+client/config/rest_private_config.json
 
 

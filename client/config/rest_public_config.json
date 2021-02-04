@@ -1,0 +1,5 @@
+{
+	"server_type": "RESTAPI",
+	"url_post": "https://gd79ahqe03.execute-api.us-east-1.amazonaws.com/public/dragonbearclassifier"
+}
+
