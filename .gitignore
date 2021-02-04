@@ -64,5 +64,8 @@ venv.bak/
 data/
 scratch/
 aws_creds.json
+aws_sm_config.json
+client/config/sagemaker_config.json
+client/config/rest_private_config.json
 
 
