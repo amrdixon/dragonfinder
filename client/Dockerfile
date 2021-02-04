@@ -25,6 +25,10 @@ RUN mkdir data_sample
 
 ADD /data_sample/ ./data_sample/
 
+RUN mkdir config
+
+ADD /config/ ./config/
+
 RUN pip install -r requirements.txt
 
 CMD ["/bin/bash"]

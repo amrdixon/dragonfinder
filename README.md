@@ -4,6 +4,7 @@ The dragon finder project is a deep learning image classifier that identifies th
 
 ## Project Directory
 - client: Client tool directory
+- cloud_deployment: Deployment of model in cloud directory
 - models: Model development directory
 - run_servable_model.sh
 - run_client_tool.sh

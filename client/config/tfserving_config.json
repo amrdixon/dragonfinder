@@ -1,0 +1,7 @@
+{
+	"server_type": "TFServing",
+	"endpoint": "http://localhost:8501/v1/models/dragon_bear_classifier_mobilenetv2",
+	"labels": ["Bear","Dragon"]
+	
+}
+
