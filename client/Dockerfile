@@ -1,4 +1,4 @@
-FROM python:3.7.5-slim-buster
+FROM arm32v7/python:3.7-stretch
 
 LABEL author="Anna Dixon <anna@datafoss.com"
 
@@ -20,10 +20,6 @@ COPY client.py ./
 RUN mkdir aws_creds
 
 ADD /aws_creds/ ./aws_creds/
-
-RUN mkdir data_sample
-
-ADD /data_sample/ ./data_sample/
 
 RUN mkdir config
 
