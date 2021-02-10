@@ -44,6 +44,4 @@ A sample real world dataset has been provided in the /data_sample directory. An 
 
     python3 main_application.py data_sample/bear/IMG_5077.jpg
     
-By default, the client works with the local Docker server set up by the bash run_servable_model.sh script. In order to use a SageMaker inference endpoint instead, you must first gather key details about your deployment (i.e. endpoint name and yoru AWS credentials) as outlined by the instructions in the cloud_deployment directory, and then add the following arguments to the client tool command:
-
-    python3 main_application.py <image_path> --server_type SageMaker --endpoint <sagemaker_endpoint> --creds <aws_creds_file> 
+By default, the client works with the local Docker server set up by the bash run_servable_model.sh script. In order to use a SageMaker inference endpoint instead, this project shows how to either call the endpoint directly with your AWS developer credentials or call a custom REST API. Instructions for both methods' deployment in located in the cloud_deployment directory and instructions for tailoring the client to the different types of server are located in the client directory.
