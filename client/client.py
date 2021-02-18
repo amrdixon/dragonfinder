@@ -78,11 +78,14 @@ class ImageBinaryClassifierRESTAPIDriver(ImageBinaryClassifierDriver):
             if x.status_code == 200:
                 print('Successfully completed inference.')
                 response = x.json()
+                print(response)
                 print('Model Prediction: {}'.format(response['prediction']))                
             else:
                 print('Could not run inference using this connection.')
         except Exception as e:
             print('Running model inference failed: {}'.format(str(e)))
+            
+        return response['prediction']
     
         
         
@@ -202,8 +205,10 @@ class ImageBinaryClassifierTFServingDriver(ImageBinaryClassifierDriver):
         
         """
         
-        input_img = Image.open(image_path)
-
+        if image_path:
+            input_img = Image.open(image_path)
+        else:
+            input_img = pil_image
         input_img = input_img.resize(self._input_tensor_shape[-2:])
         img_batch_arr = np.array([np.array(input_img)])
         

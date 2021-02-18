@@ -15,15 +15,13 @@ COPY requirements.txt .
 
 COPY main_application.py .
 
+COPY api.py .
+
 COPY client.py ./
 
 RUN mkdir aws_creds
 
 ADD /aws_creds/ ./aws_creds/
-
-RUN mkdir data_sample
-
-ADD /data_sample/ ./data_sample/
 
 RUN mkdir config
 
@@ -31,4 +29,4 @@ ADD /config/ ./config/
 
 RUN pip install -r requirements.txt
 
-CMD ["/bin/bash"]
+CMD python3 api.py
