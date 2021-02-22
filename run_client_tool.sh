@@ -1,5 +1,5 @@
 #!/bin/bash
 # BASH CALL TO BUILD AND RUN DRAGON BEAR CLASSIFIER CLIENT
 cd client/
-docker build -t dragon_bear_client .
-docker run -it --network=host dragon_bear_client
+docker build -t dragonfinderclientapi:latest .
+docker run -p 5000:5000 dragonfinderclientapi:latest

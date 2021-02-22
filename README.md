@@ -2,46 +2,43 @@
 
 The dragon finder project is a deep learning image classifier that identifies the presence of dragons. Alas, dragons are fickle creatures and rarely seen in the wild. So, in this phase of the project, the classifier predicts whether an image is a plush dragon or plush bear.
 
+The focus of this work is the process of deploying a TensorFlow model to be incorporated in an app. This repo supports the use of three different kids of model inference servers:
+1. Local TensorFlow Serving
+2. Cloud AWS SageMaker Inference Endpoint
+3. Cloud REST API
+
+A REST API client capable of interfacing with each server type is also included.
+
 ## Project Directory
 - client: Client tool directory
 - cloud_deployment: Deployment of model in cloud directory
 - models: Model development directory
-- run_servable_model.sh
 - run_client_tool.sh
-
+- run_servable_model.sh
+- run_server_client_local.sh
 
 ## Run Instructions
-The project package is composed of a server and a client. It is essential to first build and run the server before the client.
 
-### Server
+The project package is composed of three different types of servers and their corresponding clients. This repo come fully equipped to deploy the local Docker TF-Serving model on the local machine and contains instructions for model server cloud deployment for use with this repo.
 
-There are two different types of server: Docker TF-Serving container and an AWS SageMaker inference endpoint. The Docker TF-Serving model is deployed on the local machine. This repo contains all necessary components to run the current model in a local server. The AWS SageMaker model is a cloud-based endpoint for serving predictions. The SageMaker deployment of the model requires your own AWS credentials and this repo contains instructions to assist you in your own deployment.
+### Local Server
 
-#### Docker TF-Serving (Local)
+ In order to run both the local server and client, you must have Docker installed and run the following command:
 
-The local server inference model is contained in a Docker container and requests to the model are made via a REST API. The Docker serving image was developed using TensorFlow Serving and the container publishes the REST API to our host's port 8501.
-
-To build and run the server:
-
-    bash run_servable_model.sh
+    bash run_server_client_local.sh
     
-#### AWS SageMaker Endpoint
+This should deploy two linked Docker containers: one serving the model and one acting as a REST API client. The local server inference model is contained in a Docker container and requests to the model are made via a REST API. The Docker serving image was developed using TensorFlow Serving and the container publishes the REST API to our host's port 8501. The client Docker container provides a consistent interface for all server types. The client container publishes the client REST API to the host's port 5000. Once the server and client API is built and running, you can interface with it via HTTP POST method. A sample real world dataset has been provided in the client/data_sample directory. An example of classifying an image is as follows:
 
-The cloud-based inference model was deployed using AWS SageMaker. Instructions to deploy the model using SageMaker are located in the cloud_deployment directory.
+    curl -v -H "Content-Type: multipart/form-data" -F "file=@client/data_sample/bear/IMG_5079.jpg" http://0.0.0.0:5000/classify
+    
+### Cloud Server
 
-### Client
-The client is a CLI tool run in a separate Docker container. 
-
-To build and run the client:
+The two types of cloud servers shown here are an AWS SageMaker inference endpoint and a cloud REST API using Amazon API Gateway. The AWS SageMaker model is a cloud-based endpoint for serving predictions. The SageMaker deployment of the model requires your own AWS credentials and this repo contains instructions to assist you in your own deployment. The cloud REST API server is an extension of the SageMaker inference model deployment that provides better interfacing for the app. Instructions for deploying both types of cloud servers are found in the cloud_deployment directory. Once the servers are deployed and the setup has been completed, run the following command to deploy the client:
 
     bash run_client_tool.sh
-
-Once inside the Docker container, you can connect to the tool and classify an image using the following:
-
-    python3 main_application.py <image_path>
-
-A sample real world dataset has been provided in the /data_sample directory. An example running the tool is as follows:
-
-    python3 main_application.py data_sample/bear/IMG_5077.jpg
     
-By default, the client works with the local Docker server set up by the bash run_servable_model.sh script. In order to use a SageMaker inference endpoint instead, this project shows how to either call the endpoint directly with your AWS developer credentials or call a custom REST API. Instructions for both methods' deployment in located in the cloud_deployment directory and instructions for tailoring the client to the different types of server are located in the client directory.
+Just as with the local server/client deployment, you can interface with it via HTTP POST method. A sample real world dataset has been provided in the client/data_sample directory. An example of classifying an image is as follows:
+
+    curl -v -H "Content-Type: multipart/form-data" -F "file=@client/data_sample/bear/IMG_5079.jpg" http://0.0.0.0:5000/classify?server_type=<SERVER_TYPE>
+    
+where SERVER_TYPE is either 'SageMaker', 'RESTAPIPublic' or 'RESTAPIPrivate' depending on desired server.
