@@ -1,0 +1,8 @@
+{
+	"server_type": "SageMaker",
+	"endpoint": "",
+	"creds_filepath": "aws_creds/aws_creds.json",
+	"labels": ["Bear","Dragon"]
+	
+}
+
