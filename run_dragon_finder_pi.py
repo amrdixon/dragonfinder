@@ -34,15 +34,14 @@ def run_inference_restapi(img_filepath):
     
     """
     
-    
-     headers = {"content-type": "multipart/form-data"}
-     local_client_url = 'http://0.0.0.0:5000/classify?server_type=RestAPIPublic'
-     x = requests.post(local_client_url, data=img_filepath, headers=headers)
-     response = x.json()
+    headers = {"content-type": "multipart/form-data"}
+    local_client_url = 'http://0.0.0.0:5000/classify?server_type=RestAPIPublic'
+    x = requests.post(local_client_url, data=img_filepath, headers=headers)
+    response = x.json()
      
-     logging.debug('Model Prediction of picture taken: {}'.format(response['prediction']))
+    logging.debug('Model Prediction of picture taken: {}'.format(response['prediction']))
      
-     return response['prediction']
+    return response['prediction']
         
         
 if __name__ == "__main__":
