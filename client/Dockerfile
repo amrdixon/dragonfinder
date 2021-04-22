@@ -13,6 +13,8 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 
+RUN pip install -r requirements.txt
+
 COPY main_application.py .
 
 COPY api.py .
@@ -26,8 +28,6 @@ ADD /aws_creds/ ./aws_creds/
 RUN mkdir config
 
 ADD /config/ ./config/
-
-RUN pip install -r requirements.txt
 
 EXPOSE 5000
 

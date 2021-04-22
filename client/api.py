@@ -12,6 +12,7 @@ app = Flask(__name__)
 api = Api(app)
 
 
+
 class ClassifyImage(Resource):
     def post(self):
         
@@ -50,11 +51,11 @@ class ClassifyImage(Resource):
                 del config_dict['creds_filepath']
                 driver = client.ImageBinaryClassifierTFSageMakerDriver(creds, **config_dict)
             elif server_type == 'RESTAPIPublic':
+                app.logger.info('Starting public REST API server call')
                 config_path = 'config/rest_public_config.json'
                 config_dict = load_config_dict(config_path)
                 driver = client.ImageBinaryClassifierRESTAPIDriver(**config_dict)
             elif server_type == 'RESTAPIPrivate':
-                print('here')
                 config_path = 'config/rest_private_config.json'
                 config_dict = load_config_dict(config_path)
                 driver = client.ImageBinaryClassifierRESTAPIDriver(**config_dict)
