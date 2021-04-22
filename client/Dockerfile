@@ -15,6 +15,8 @@ COPY requirements.txt .
 
 COPY main_application.py .
 
+COPY api.py .
+
 COPY client.py ./
 
 RUN mkdir aws_creds
@@ -27,4 +29,6 @@ ADD /config/ ./config/
 
 RUN pip install -r requirements.txt
 
-CMD ["/bin/bash"]
+EXPOSE 5000
+
+CMD python api.py
