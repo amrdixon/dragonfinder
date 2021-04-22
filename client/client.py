@@ -5,6 +5,9 @@ import json
 import os
 import boto3
 from abc import ABC, abstractmethod
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 class ImageBinaryClassifierDriver(ABC):
@@ -76,13 +79,15 @@ class ImageBinaryClassifierRESTAPIDriver(ImageBinaryClassifierDriver):
         try:
             x = requests.post(self._url_post, data=body, headers=headers)
             if x.status_code == 200:
-                print('Successfully completed inference.')
+                logging.debug('Successfully completed inference.')
                 response = x.json()
-                print('Model Prediction: {}'.format(response['prediction']))                
+                logging.debug('Model Prediction: {}'.format(response['prediction']))                
             else:
-                print('Could not run inference using this connection.')
+                logging.error('Could not run inference using this connection.')
         except Exception as e:
-            print('Running model inference failed: {}'.format(str(e)))
+            logging.error('Running model inference failed: {}'.format(str(e)))
+            
+        return response['prediction']
     
         
         
@@ -145,15 +150,15 @@ class ImageBinaryClassifierTFSageMakerDriver(ImageBinaryClassifierDriver):
             
             #check status code
             if resp['ResponseMetadata']['HTTPStatusCode'] == 200:
-                print('Successfully completed inference.')
+                logging.debug('Successfully completed inference.')
                 result = json.loads(resp['Body'].read().decode())
                 res_logit = result["predictions"][0][0]
                 res_class_int = int(res_logit>=0.0)
-                print('Model Predictions \n{} : {}'.format(image_path, self._class_labels[res_class_int]))                
+                logging.debug('Model Predictions \n{} : {}'.format(image_path, self._class_labels[res_class_int]))
             else:
-                print('Could not run inference using this connection.')
+                logging.error('Could not run inference using this connection.')
         except Exception as e:
-            print('Running model inference failed: {}'.format(str(e)))
+            logging.error('Running model inference failed: {}'.format(str(e)))
             
         return self._class_labels[res_class_int]
                             
@@ -182,12 +187,12 @@ class ImageBinaryClassifierTFServingDriver(ImageBinaryClassifierDriver):
         try:
             connect_resp = requests.get(self._endpoint)
             if connect_resp.status_code == 200:
-                print("Connection to server successful.")
+                logging.debug("Connection to server successful.")
                 self._conect_ok = True
             else:
-                print("Could not connect to server.")
+                logging.error("Could not connect to server.")
         except Exception as e:
-            print('Connection to server failed: {}'.format(str(e)))
+            logging.error('Connection to server failed: {}'.format(str(e)))
         
         
     def classify_image(self, image_path=None, pil_image=None):
@@ -202,8 +207,10 @@ class ImageBinaryClassifierTFServingDriver(ImageBinaryClassifierDriver):
         
         """
         
-        input_img = Image.open(image_path)
-
+        if image_path:
+            input_img = Image.open(image_path)
+        else:
+            input_img = pil_image
         input_img = input_img.resize(self._input_tensor_shape[-2:])
         img_batch_arr = np.array([np.array(input_img)])
         
@@ -214,14 +221,14 @@ class ImageBinaryClassifierTFServingDriver(ImageBinaryClassifierDriver):
             post_url = self._endpoint + ':predict'
             x = requests.post(post_url, data=data, headers=headers)
             if x.status_code == 200:
-                print('Successfully completed inference.')
+                logging.debug('Successfully completed inference.')
                 response = x.json()
                 res_logit = response["predictions"][0][0]
                 res_class_int = int(res_logit>=0.0)
-                print('Model Predictions \n{} : {}'.format(image_path, self._class_labels[res_class_int]))                
+                logging.debug('Model Predictions \n{} : {}'.format(image_path, self._class_labels[res_class_int]))
             else:
-                print('Could not run inference using this connection.')
+                logging.error('Could not run inference using this connection.')
         except Exception as e:
-            print('Running model inference failed: {}'.format(str(e)))
+            logging.error('Running model inference failed: {}'.format(str(e)))
             
         return self._class_labels[res_class_int]
