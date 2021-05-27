@@ -3,6 +3,7 @@ import picamera
 import requests
 import json
 import logging
+import subprocess
 
 
 def capture_image(img_filepath='picamera_image.jpg'):
@@ -34,19 +35,31 @@ def run_inference_restapi(img_filepath):
     
     """
     
-    headers = {"content-type": "multipart/form-data"}
-    local_client_url = 'http://0.0.0.0:5000/classify?server_type=RestAPIPublic'
-    x = requests.post(local_client_url, file=img_filepath, headers=headers)
-    response = x.json()
+#     with open(img_filepath, 'rb') as img:
+#         
+#         local_client_url = 'http://0.0.0.0:5000/classify?server_type=RestAPIPublic'
+#         files = {'file': ("file", img, 'multipart/form-data') }
+#         with requests.Session() as s:
+#             x = s.post(local_client_url, files=files)
+#             print('x: ', x)
+#             response = x.json()
+#             print(response)
+    #TODO: change comminucting with Docker container to use requests library
+    curl_args = ["curl", "-v", "-H", 'Content-Type: multipart/form-data', "-F", 'file=@'+img_filepath, "http://0.0.0.0:5000/classify?server_type=RESTAPIPublic"]
+    
+    process = subprocess.Popen(curl_args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate()
+    response = json.loads(stdout)
      
-    logging.debug('Model Prediction of picture taken: {}'.format(response['prediction']))
+    #S=logging.debug('Model Prediction of picture taken: {}'.format(response['prediction']))
      
-    return response['prediction']
+    return response["prediction"]
         
         
 if __name__ == "__main__":
     img_filepath = capture_image()
     prediction = run_inference_restapi(img_filepath)
+    print("It's a " + prediction + "!")
     
 
     
