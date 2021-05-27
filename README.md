@@ -2,7 +2,7 @@
 
 The dragon finder project is a deep learning image classifier that identifies the presence of dragons. Alas, dragons are fickle creatures and rarely seen in the wild. So, in this phase of the project, the classifier predicts whether an image is a plush dragon or plush bear.
 
-![](client/data_sample/dragondragon_sample.jpg)
+![](https://github.com/amrdixon/dragonfinder/blob/master/client/data_sample/dragon/dragon_sample.jpg)
 
 The focus of this work is the process of deploying a TensorFlow model to be incorporated in an app. This repo supports the use of three different kinds of model inference servers:
 1. Local TensorFlow Serving
