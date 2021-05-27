@@ -2,6 +2,8 @@
 
 The dragon finder project is a deep learning image classifier that identifies the presence of dragons. Alas, dragons are fickle creatures and rarely seen in the wild. So, in this phase of the project, the classifier predicts whether an image is a plush dragon or plush bear.
 
+![](client/data_sample/dragondragon_sample.jpg)
+
 The focus of this work is the process of deploying a TensorFlow model to be incorporated in an app. This repo supports the use of three different kinds of model inference servers:
 1. Local TensorFlow Serving
 2. Cloud AWS SageMaker Inference Endpoint
@@ -17,7 +19,7 @@ A locally deployed REST API client capable of interfacing with each server type 
 - run_servable_model.sh
 - run_server_client_local.sh
 
-## Run Instructions
+## Run Instructions (Mac/Linux)
 
 The project package is composed of three different types of servers and their corresponding clients. This repo come fully equipped to deploy the local Docker TF-Serving model on the local machine and contains instructions for model server cloud deployment for use with this repo.
 

@@ -1,6 +1,6 @@
 # TensorFlow Inference Endpoint Cloud Deployment (AWS)
 
-This directory contains all scripts and documentation needed to take an already trained and saved TF model and deploy it in AWS. The first part is to deploy an AWS SageMaker inference endpoint. This is a mandatory step. The cloud REST API server is an extension of the SageMaker inference model deployment. This is an optional step, as you can directly interface with the SageMaker endpoint, but doing so it recommended as it will enable interfacing with your app without needing your developer credentials.
+This directory contains all scripts and documentation needed to take an already trained and saved TF model and deploy it in AWS. The first part is to deploy an AWS SageMaker inference endpoint. This is a mandatory step. The cloud REST API server is an extension of the SageMaker inference model deployment. This is an optional step, as you can directly interface with the SageMaker endpoint, but doing so it recommended as it will enable interfacing with your app without needing to store your developer credentials locally.
 
 ## Directory Contents
 - aws_model_deploy.py: Main (entry point) script
@@ -88,4 +88,4 @@ It takes a few minutes for AWS to complete the request and then you should have 
 
 ## Amazon API Gateway Endpoint
 
-Next, you can optionally choose to deploy the SageMaker inference endpoint as a REST API in the cloud using Amazon API Gateway. The work here follows this [tutorial] (https://aws.amazon.com/blogs/machine-learning/call-an-amazon-sagemaker-model-endpoint-using-amazon-api-gateway-and-aws-lambda/) with some modifications for our use case. Instructions for Amazon Gateway deployment are a work in progress.
+Next, you can optionally choose to deploy the SageMaker inference endpoint as a REST API in the cloud using Amazon API Gateway. The work here follows this [tutorial](https://aws.amazon.com/blogs/machine-learning/call-an-amazon-sagemaker-model-endpoint-using-amazon-api-gateway-and-aws-lambda/) with some modifications for our use case. Instructions for Amazon Gateway deployment are a work in progress.
